@@ -7,62 +7,54 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <android.widget.SearchView
             android:id="@+id/editText_enter_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_marginTop="50dp"
-            android:autofillHints="none"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textSize="25sp"
+            android:layout_marginHorizontal="20dp"
+            android:queryHint="Search News"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:labelFor="@id/editText_enter_name"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="UsingOnClickInXml"
-            android:hint="Enter Name"/>
+            android:iconifiedByDefault="false"
+            android:layoutDirection="rtl"
+            />
+
 
         <Button
-            android:id="@+id/cardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/generate"
+            android:id="@+id/getTopHeadlines"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Top Headlines"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:textAllCaps="false"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_enter_name"
-            tools:ignore="UsingOnClickInXml" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
+
         <Button
-            android:id="@+id/getMeme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/get_meme"
+            android:id="@+id/getBuisnessNews"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Buisness News"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@id/cardButton"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="24sp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="50dp"
-            />
-        <Button
-            android:id="@+id/getNews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/get_news"
-            android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@id/getMeme"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="24sp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="50dp"
-            />
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="409dp"
+            android:layout_height="469dp"
+            app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines"
+            tools:layout_editor_absoluteX="1dp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

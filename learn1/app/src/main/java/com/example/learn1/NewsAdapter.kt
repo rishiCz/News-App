@@ -14,9 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 
 
 class NewsAdapter(val items: List<DataNews>) : RecyclerView.Adapter<NewsViewHolder>() {
-    init {
-
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.items_news, parent, false)
         return NewsViewHolder(view)
@@ -46,7 +43,7 @@ class NewsAdapter(val items: List<DataNews>) : RecyclerView.Adapter<NewsViewHold
     }
     fun updateButton(saved:Boolean, bookbut:ImageButton){
         val background = if(saved) R.drawable.bookmark_saved else R.drawable.bookmark_not_saved
-            bookbut.setBackgroundResource(background)
+        bookbut.setBackgroundResource(background)
     }
 
 }

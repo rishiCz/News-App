@@ -25,22 +25,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Meme"
-            android:exported="true"
-            android:theme="@style/Theme.Learn1.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".cardActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Learn1.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
