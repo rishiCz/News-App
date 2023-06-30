@@ -30,6 +30,7 @@ class NewsAdapter(val items: List<DataNews>) : RecyclerView.Adapter<NewsViewHold
             current.saved = !current.saved
             updateButton(current.saved,holder.bookbut)
         }
+        updateButton(current.saved, holder.bookbut)
         holder.titleview.text = current.title
         holder.authorTextView.text = current.author
         Glide.with(holder.itemView.context)
@@ -49,8 +50,8 @@ class NewsAdapter(val items: List<DataNews>) : RecyclerView.Adapter<NewsViewHold
 }
 
 class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val titleview: TextView = itemView.findViewById<TextView>(R.id.title)
-    val authorTextView: TextView = itemView.findViewById<TextView>(R.id.authorview)
-    val imageview: ImageView = itemView.findViewById<ImageView>(R.id.newsImage)
-    val bookbut: ImageButton = itemView.findViewById<ImageButton>(R.id.bookmarkButton)
+    val titleview: TextView = itemView.findViewById(R.id.title)
+    val authorTextView: TextView = itemView.findViewById(R.id.authorview)
+    val imageview: ImageView = itemView.findViewById(R.id.newsImage)
+    val bookbut: ImageButton = itemView.findViewById(R.id.bookmarkButton)
 }

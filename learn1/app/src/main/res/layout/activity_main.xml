@@ -4,58 +4,130 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainConstraintLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <android.widget.SearchView
-            android:id="@+id/editText_enter_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginHorizontal="20dp"
-            android:queryHint="Search News"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:iconifiedByDefault="false"
-            android:layoutDirection="rtl"
-            />
+            android:layout_height="wrap_content"
+            >
+
+            <android.widget.SearchView
+                android:id="@+id/editText_enter_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bookmark_not_saved"
+                android:iconifiedByDefault="false"
+                android:layoutDirection="rtl"
+                android:queryHint="Search News"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <Button
-            android:id="@+id/getTopHeadlines"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:text="Top Headlines"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:textAllCaps="false"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
+            <Button
+                android:id="@+id/getTopHeadlines"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bookmark_not_saved"
+                app:backgroundTint="#E6FF815B"
+                android:clipToOutline="false"
+                android:outlineProvider="none"
+                android:text="India Top Headlines"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
 
-        <Button
-            android:id="@+id/getBuisnessNews"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:text="Buisness News"
-            android:textAllCaps="false"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
+            <Button
+                android:id="@+id/getBuisnessNews"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bookmark_not_saved"
+                app:backgroundTint="#E6665BFF"
+                android:outlineProvider="none"
+                android:text="Buisness News"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_enter_name" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="409dp"
-            android:layout_height="469dp"
-            app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines"
-            tools:layout_editor_absoluteX="1dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/buttonRecyclerV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines" />
+            <Button
+                android:id="@+id/addNewsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Add Custom News"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonRecyclerV" />
+
+            <LinearLayout
+                android:id="@+id/addNewsLaout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addNewsButton">
+
+                    <EditText
+                        android:id="@+id/newsName"
+                        android:layout_width="match_parent"
+                        android:layout_margin="20dp"
+                        android:layout_height="40dp"
+                        android:hint="Title"/>
+                    <EditText
+                        android:id="@+id/newsQuery"
+                        android:layout_width="match_parent"
+                        android:layout_margin="20dp"
+                        android:layout_height="40dp"
+                        android:hint="News about"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/cancelButton"
+                            android:layout_marginStart="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#7A7A7A"
+                            android:text="Cancel" />
+                        <Button
+                            android:id="@+id/saveButton"
+                            android:layout_marginStart="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#3F51B5"
+                            android:text="Save"
+                            />
+                    </LinearLayout>
+
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
