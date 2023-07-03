@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/background">
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +31,7 @@
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/bookmark_not_saved"
+                android:background="@drawable/search_background"
                 android:iconifiedByDefault="false"
                 android:layoutDirection="rtl"
                 android:queryHint="Search News"
@@ -39,7 +46,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bookmark_not_saved"
-                app:backgroundTint="#E6FF815B"
+                app:backgroundTint="#E6373737"
                 android:clipToOutline="false"
                 android:outlineProvider="none"
                 android:text="India Top Headlines"
@@ -55,7 +62,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/bookmark_not_saved"
-                app:backgroundTint="#E6665BFF"
+                app:backgroundTint="#E6148574"
                 android:outlineProvider="none"
                 android:text="Buisness News"
                 android:textAllCaps="false"
@@ -72,10 +79,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines" />
             <Button
                 android:id="@+id/addNewsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:text="Add Custom News"
+                android:textSize="25sp"
+                android:background="@drawable/search_background"
+                app:backgroundTint="#454545"
+                android:text="+"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonRecyclerV" />

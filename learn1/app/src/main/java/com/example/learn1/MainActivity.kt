@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), buttonClickListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
                 val bundle = Bundle()
                 bundle.putString("newsType", "everything")
-                bundle.putString("query", "q=$text")
+                bundle.putString("query", "q=${text?.replace(' ','_')}")
                 intent.putExtras(bundle)
                 startActivity(intent)
                 return true;
@@ -68,13 +68,13 @@ class MainActivity : AppCompatActivity(), buttonClickListener {
         }
 
         addNewsButton.setOnClickListener {
-            addNewsButton.visibility = View.GONE
-            addNewsLayout.visibility = View.VISIBLE
+                addNewsButton.visibility = View.GONE
+                addNewsLayout.visibility = View.VISIBLE
         }
 
         saveButton.setOnClickListener {
             val name = newsNameEditText.text.toString()
-            val query = newsQueryEditText.text.toString()
+            val query = newsQueryEditText.text.toString().replace(' ','_')
             addItem(name,query)
             addNewsLayout.visibility = View.GONE
             addNewsButton.visibility = View.VISIBLE

@@ -21,6 +21,18 @@
         android:scaleType="fitXY" />
 
     <TextView
+        android:id="@+id/newsDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="02-06-2023"
+        android:layout_marginStart="20dp"
+        android:padding="5dp"
+        android:background="@drawable/date_layout"
+
+        app:layout_constraintStart_toStartOf="@+id/newsImage"
+        app:layout_constraintTop_toTopOf="@+id/newsImage" />
+
+    <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,12 +74,24 @@
         android:background="@drawable/bookmark_not_saved"
         app:srcCompat="@drawable/bookmar" />
 
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/newsImage"
+        app:layout_constraintBottom_toBottomOf="@+id/newsImage"
+        android:scaleType="fitCenter"
+        android:background="@drawable/bookmark_not_saved"
+        android:backgroundTint="#FBFBFB"
+        app:srcCompat="@drawable/share" />
+
     <View
         android:layout_width="match_parent"
         android:layout_marginHorizontal="10dp"
         android:layout_height="2dp"
-        android:background="#757575"
-        android:layout_marginTop="20dp"
+        android:background="#CFCFCF"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newsImage" />
 

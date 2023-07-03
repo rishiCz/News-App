@@ -5,5 +5,6 @@ data class DataNews(
     val author : String,
     val url :String,
     val urlToImage : String,
+    val publishedAt : String,
     var saved : Boolean
 )

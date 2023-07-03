@@ -4,9 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.car.ui.utils.CarUiUtils.getActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class News : AppCompatActivity() {
+class News : AppCompatActivity(),newsClickListener {
 
     private lateinit var mAdapter: NewsAdapter
     var item = mutableListOf<DataNews>()
@@ -28,6 +30,11 @@ class News : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
+
+        val backButton = findViewById<ImageButton>(R.id.newsBackButton)
+        backButton.setOnClickListener{
+            this.onBackPressed()
+        }
         val recyclerV = findViewById<RecyclerView>(R.id.recyclerV)
         recyclerV.layoutManager = LinearLayoutManager(this)
         var bundle = intent.extras
@@ -48,7 +55,7 @@ class News : AppCompatActivity() {
             try {
                val response = newsApi.getDynamicNews("/v2/$newsType?$query$key")
                 item = response.body()!!.articles.toMutableList()
-                mAdapter = NewsAdapter(item)
+                mAdapter = NewsAdapter(item,this@News)
                 recyclerView.adapter = mAdapter
                 Log.d("APIRES", item.toString())
 
@@ -57,9 +64,18 @@ class News : AppCompatActivity() {
             }
         }
     }
-    fun open(){
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
+
+    override fun onNewsClick(url: String) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(browserIntent)
+    }
+
+    override fun onShareClick(url: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT,url)
+        val chooser = Intent.createChooser(intent,"Share this news using:")
+        startActivity(chooser)
     }
 
 }
