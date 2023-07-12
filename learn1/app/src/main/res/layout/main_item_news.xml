@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardV"
-    android:layout_width="match_parent"
+    android:layout_width="250dp"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="5dp"
+    android:padding="5dp"
     >
 
     <ImageView
-        android:id="@+id/newsImage"
+        android:id="@+id/newsImage_main"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="180dp"
         android:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         android:scaleType="fitXY" />
 
     <TextView
-        android:id="@+id/newsDateText"
+        android:id="@+id/newsDateText_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="02-06-2023"
@@ -29,11 +29,11 @@
         android:padding="5dp"
         android:background="@drawable/date_layout"
 
-        app:layout_constraintStart_toStartOf="@+id/newsImage"
-        app:layout_constraintTop_toTopOf="@+id/newsImage" />
+        app:layout_constraintStart_toStartOf="@+id/newsImage_main"
+        app:layout_constraintTop_toTopOf="@+id/newsImage_main" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/title_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/title_background"
@@ -43,13 +43,13 @@
         android:text="Sample Text"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/newsImage"
+        app:layout_constraintBottom_toBottomOf="@+id/newsImage_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/authorview"
+        android:id="@+id/authorview_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -58,42 +58,33 @@
         android:text="Rishi Malik"
         android:textColor="#BFFFFFFF"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/newsImage"
+        app:layout_constraintBottom_toBottomOf="@id/newsImage_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.014"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/bookmarkButton"
+        android:id="@+id/bookmarkButton_main"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/newsImage"
-        app:layout_constraintTop_toTopOf="@+id/newsImage"
+        app:layout_constraintEnd_toEndOf="@+id/newsImage_main"
+        app:layout_constraintTop_toTopOf="@+id/newsImage_main"
         android:scaleType="centerCrop"
         android:background="@drawable/bookmark_not_saved"
         app:srcCompat="@drawable/bookmar" />
 
     <ImageButton
-        android:id="@+id/shareButton"
+        android:id="@+id/shareButton_main"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/newsImage"
-        app:layout_constraintBottom_toBottomOf="@+id/newsImage"
+        app:layout_constraintEnd_toEndOf="@+id/newsImage_main"
+        app:layout_constraintBottom_toBottomOf="@+id/newsImage_main"
         android:scaleType="fitCenter"
         android:background="@drawable/bookmark_not_saved"
         android:backgroundTint="#FBFBFB"
         app:srcCompat="@drawable/share" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_height="2dp"
-        android:background="#CFCFCF"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newsImage" />
 
 
 

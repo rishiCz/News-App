@@ -5,10 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.car.ui.utils.CarUiUtils.getActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,13 +31,14 @@ class News : AppCompatActivity(),newsClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
 
+        val loadingbar = findViewById<ProgressBar>(R.id.progressBar2)
         val backButton = findViewById<ImageButton>(R.id.newsBackButton)
         backButton.setOnClickListener{
             this.onBackPressed()
         }
         val recyclerV = findViewById<RecyclerView>(R.id.recyclerV)
         recyclerV.layoutManager = LinearLayoutManager(this)
-        var bundle = intent.extras
+        val bundle = intent.extras
 
         if(bundle!=null){
             val newsType = bundle.getString("newsType").toString()
@@ -47,7 +48,7 @@ class News : AppCompatActivity(),newsClickListener {
         else fetchData(recyclerV)
     }
 
-    private fun  fetchData(recyclerView: RecyclerView, newsType: String = "top-headlines", query: String = "country=in"){
+    public fun  fetchData(recyclerView: RecyclerView, newsType: String = "top-headlines", query: String = "country=in",view:Int = R.layout.items_news, listener:newsClickListener=this@News){
         val key= "&apiKey=e4d8cf10d30147dd9f8c8a39981315e1"
         Log.d("newsurl", "$newsType    $query")
         item.clear()
@@ -55,7 +56,7 @@ class News : AppCompatActivity(),newsClickListener {
             try {
                val response = newsApi.getDynamicNews("/v2/$newsType?$query$key")
                 item = response.body()!!.articles.toMutableList()
-                mAdapter = NewsAdapter(item,this@News)
+                mAdapter = NewsAdapter(item,view,listener)
                 recyclerView.adapter = mAdapter
                 Log.d("APIRES", item.toString())
 

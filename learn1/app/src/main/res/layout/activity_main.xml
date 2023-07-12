@@ -5,8 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    >
 
+    >
+    <LinearLayout
+        android:id="@+id/splashLayoout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp">
+        <fragment
+            android:name="com.example.learn1.SplashScree"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+    </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,6 +51,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/topnews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top News"
+                android:textSize="20sp"
+                android:layout_margin="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/newsRecyclerMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topnews" />
 
             <Button
                 android:id="@+id/getTopHeadlines"
@@ -76,7 +108,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/getTopHeadlines" />
+                app:layout_constraintTop_toBottomOf="@+id/newsRecyclerMain" />
             <Button
                 android:id="@+id/addNewsButton"
                 android:layout_width="50dp"

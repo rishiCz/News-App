@@ -13,10 +13,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
 
-class NewsAdapter(val items: List<DataNews>,val listener: newsClickListener) : RecyclerView.Adapter<NewsViewHolder>() {
+class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClickListener) : RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.items_news, parent, false)
-        return NewsViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(View, parent, false)
+        return NewsViewHolder(view,View)
 
     }
 
@@ -53,13 +53,13 @@ class NewsAdapter(val items: List<DataNews>,val listener: newsClickListener) : R
     }
 }
 
-class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val titleview: TextView = itemView.findViewById(R.id.title)
-    val authorTextView: TextView = itemView.findViewById(R.id.authorview)
-    val imageview: ImageView = itemView.findViewById(R.id.newsImage)
-    val bookbut: ImageButton = itemView.findViewById(R.id.bookmarkButton)
-    val dateText: TextView = itemView.findViewById(R.id.newsDateText)
-    val shareButton: ImageButton = itemView.findViewById(R.id.shareButton)
+class NewsViewHolder(itemView: View,view: Int) : RecyclerView.ViewHolder(itemView) {
+    val titleview: TextView = itemView.findViewById(if(view == R.layout.items_news) R.id.title else R.id.title_main)
+    val authorTextView: TextView = itemView.findViewById(if(view == R.layout.items_news) R.id.authorview else R.id.authorview_main)
+    val imageview: ImageView = itemView.findViewById(if(view == R.layout.items_news) R.id.newsImage else R.id.newsImage_main)
+    val bookbut: ImageButton = itemView.findViewById(if(view == R.layout.items_news) R.id.bookmarkButton else R.id.bookmarkButton_main)
+    val dateText: TextView = itemView.findViewById(if(view == R.layout.items_news) R.id.newsDateText else R.id.newsDateText_main)
+    val shareButton: ImageButton = itemView.findViewById(if(view == R.layout.items_news) R.id.shareButton else R.id.shareButton_main)
 }
 interface newsClickListener{
     fun onNewsClick(url:String)
