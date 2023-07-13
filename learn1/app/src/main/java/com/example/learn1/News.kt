@@ -4,8 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +26,8 @@ class News : AppCompatActivity(),newsClickListener {
     private lateinit var mAdapter: NewsAdapter
     lateinit var newsDao: NewsDao
     lateinit var recyclerV: RecyclerView
+    lateinit var loadingbar: ProgressBar
+    lateinit var loadingTV:TextView
     var savedNewsList = mutableListOf<DataNews>()
     var item = mutableListOf<DataNews>()
     val retrofit = Retrofit.Builder()
@@ -36,9 +41,28 @@ class News : AppCompatActivity(),newsClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
 
-        val loadingbar = findViewById<ProgressBar>(R.id.progressBar2)
+        loadingbar = findViewById(R.id.progressBar2)
+        loadingTV = findViewById(R.id.loadingText)
         val backButton = findViewById<ImageButton>(R.id.newsBackButton)
+        val filterSearchView = findViewById<SearchView>(R.id.filterSearch)
         newsDao = MyDatabase.getNewsDatabase(application)!!.newsDao
+
+        filterSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(text: String?): Boolean {
+                return false;
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                if (text != null) {
+                    if (intent.extras?.getString("saved")=="true")
+                        filterList(savedNewsList,text)
+                    else
+                        filterList(item,text)
+                }
+                return true
+            }
+
+        })
         backButton.setOnClickListener{
             this.onBackPressed()
         }
@@ -60,7 +84,17 @@ class News : AppCompatActivity(),newsClickListener {
         else fetchData(recyclerV)
     }
 
+    private fun filterList(NewsList: MutableList<DataNews>,query: String) {
+        val filteredList = NewsList.filter { it.title.contains(query, ignoreCase = true) }
+        mAdapter = NewsAdapter(filteredList,R.layout.items_news,this)
+        recyclerV.adapter=mAdapter
+    }
+
     private fun loadSavedNews() {
+        loadingTV.text=""
+        loadingbar.visibility=View.GONE
+        if (savedNewsList.isEmpty())
+            loadingTV.text="No Bookmarked News"
         Log.d( "loadSavedNews: ","ran")
         mAdapter = NewsAdapter(savedNewsList,R.layout.items_news,this)
         recyclerV.adapter = mAdapter
@@ -130,6 +164,8 @@ class News : AppCompatActivity(),newsClickListener {
         else{
             savedNewsList.remove(news)
             newsDao.deleteNews(news)
+            if (savedNewsList.isEmpty())
+                loadingTV.text="No Bookmarked News"
             mAdapter.notifyDataSetChanged()
         }
     }
