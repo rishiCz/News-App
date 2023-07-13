@@ -72,7 +72,8 @@
         app:layout_constraintTop_toTopOf="@+id/newsImage_main"
         android:scaleType="centerCrop"
         android:background="@drawable/bookmark_not_saved"
-        app:srcCompat="@drawable/bookmar" />
+        app:srcCompat="@drawable/bookmar"
+        android:visibility="gone"/>
 
     <ImageButton
         android:id="@+id/shareButton_main"

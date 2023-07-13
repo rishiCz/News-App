@@ -26,11 +26,13 @@ class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClic
         holder.titleview.text = current.title
         holder.authorTextView.text = current.author
         updateButton(current.saved, holder.bookbut)
-
-        Glide.with(holder.itemView.context)
-            .load(current.urlToImage)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
-            .into(holder.imageview)
+        if(current.urlToImage == "null")
+            holder.imageview.setImageResource(R.drawable.image_not_loaded)
+        else
+            Glide.with(holder.itemView.context)
+                .load(current.urlToImage)
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
+                .into(holder.imageview)
 
         holder.imageview.setOnClickListener{
             listener.onNewsClick(current.url)
@@ -40,10 +42,24 @@ class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClic
         }
         holder.bookbut.setOnClickListener{
             current.saved = !current.saved
-            updateButton(current.saved,holder.bookbut)
+            holder.bookbut.animate().apply {
+                duration=200
+                scaleXBy(0.4f)
+                scaleYBy(0.4f)
+            }.withEndAction {
+                updateButton(current.saved, holder.bookbut)
+                listener.onSaveClick(current)
+                holder.bookbut.animate().apply {
+                    duration=300
+                    scaleX(1f)
+                    scaleY(1f)
+                }
+            }
+
+
+
         }
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
@@ -64,4 +80,5 @@ class NewsViewHolder(itemView: View,view: Int) : RecyclerView.ViewHolder(itemVie
 interface newsClickListener{
     fun onNewsClick(url:String)
     fun onShareClick(url:String)
+    fun onSaveClick(news:DataNews)
 }
