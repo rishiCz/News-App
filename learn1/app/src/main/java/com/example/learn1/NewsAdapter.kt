@@ -35,7 +35,7 @@ class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClic
                 .into(holder.imageview)
 
         holder.imageview.setOnClickListener{
-            listener.onNewsClick(current.url)
+            listener.onNewsClick(current)
         }
         holder.shareButton.setOnClickListener{
             listener.onShareClick(current.url)
@@ -55,9 +55,6 @@ class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClic
                     scaleY(1f)
                 }
             }
-
-
-
         }
     }
     override fun getItemCount(): Int {
@@ -78,7 +75,7 @@ class NewsViewHolder(itemView: View,view: Int) : RecyclerView.ViewHolder(itemVie
     val shareButton: ImageButton = itemView.findViewById(if(view == R.layout.items_news) R.id.shareButton else R.id.shareButton_main)
 }
 interface newsClickListener{
-    fun onNewsClick(url:String)
+    fun onNewsClick(news: DataNews)
     fun onShareClick(url:String)
     fun onSaveClick(news:DataNews)
 }

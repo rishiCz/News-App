@@ -169,9 +169,12 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         mAdapter.notifyDataSetChanged()
     }
 
-    override fun onNewsClick(url: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(browserIntent)
+    override fun onNewsClick(news: DataNews) {
+        val intent = Intent(this,NewsContent::class.java)
+        intent.putExtra("newsObj",news)
+        startActivity(intent)
+//        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//        startActivity(browserIntent)
     }
 
     override fun onShareClick(url: String) {

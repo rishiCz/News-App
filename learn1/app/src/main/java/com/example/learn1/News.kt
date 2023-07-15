@@ -10,6 +10,10 @@ import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learn1.Dao.NewsDao
@@ -23,8 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class News : AppCompatActivity(),newsClickListener {
 
-    private lateinit var mAdapter: NewsAdapter
-    lateinit var newsDao: NewsDao
+
+    var mAdapter: NewsAdapter? = null
+    var newsDao: NewsDao? = null
+    var isSaved = false
     lateinit var recyclerV: RecyclerView
     lateinit var loadingbar: ProgressBar
     lateinit var loadingTV:TextView
@@ -70,7 +76,8 @@ class News : AppCompatActivity(),newsClickListener {
         recyclerV.layoutManager = LinearLayoutManager(this)
         val bundle = intent.extras
 
-        savedNewsList = newsDao.getSavedNewsList() as MutableList<DataNews>
+        savedNewsList = newsDao!!.getSavedNewsList() as MutableList<DataNews>
+
 
         if(bundle!=null){
             if (bundle.getString("saved")=="true")
@@ -84,6 +91,16 @@ class News : AppCompatActivity(),newsClickListener {
         else fetchData(recyclerV)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (mAdapter !=null && !isSaved) {
+            savedNewsList = newsDao!!.getSavedNewsList() as MutableList<DataNews>
+            checkNews()
+            mAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+
     private fun filterList(NewsList: MutableList<DataNews>,query: String) {
         val filteredList = NewsList.filter { it.title.contains(query, ignoreCase = true) }
         mAdapter = NewsAdapter(filteredList,R.layout.items_news,this)
@@ -91,6 +108,7 @@ class News : AppCompatActivity(),newsClickListener {
     }
 
     private fun loadSavedNews() {
+        isSaved = true
         loadingTV.text=""
         loadingbar.visibility=View.GONE
         if (savedNewsList.isEmpty())
@@ -143,9 +161,10 @@ class News : AppCompatActivity(),newsClickListener {
     }
 
 
-    override fun onNewsClick(url: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(browserIntent)
+    override fun onNewsClick(news: DataNews) {
+        val intent = Intent(this,NewsContent::class.java)
+        intent.putExtra("newsObj",news)
+        startActivity(intent)
     }
 
     override fun onShareClick(url: String) {
@@ -158,16 +177,15 @@ class News : AppCompatActivity(),newsClickListener {
 
     override fun onSaveClick(news: DataNews) {
         if(news.saved){
-            newsDao.insertNews(news)
-            mAdapter.notifyDataSetChanged()
+            newsDao!!.insertNews(news)
         }
         else{
+            newsDao!!.deleteNews(news)
             savedNewsList.remove(news)
-            newsDao.deleteNews(news)
             if (savedNewsList.isEmpty())
                 loadingTV.text="No Bookmarked News"
-            mAdapter.notifyDataSetChanged()
         }
+        mAdapter!!.notifyDataSetChanged()
     }
 
 }

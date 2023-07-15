@@ -2,6 +2,7 @@ package com.example.learn1
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class DataNews(
@@ -15,4 +16,4 @@ data class DataNews(
     var saved : Boolean,
     @PrimaryKey(autoGenerate = true)
     var id:Int
-)
+): Serializable
