@@ -1,6 +1,5 @@
 package com.example.learn1
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +7,9 @@ import android.view.ViewPropertyAnimator
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.learn1.DataClass.DataButtons
 
-class ButtonAdapter(val items: List<DataButtons>,val listener: buttonClickListener ) : RecyclerView.Adapter<ButtonViewHolder>(){
+class ButtonAdapter(val items: MutableList<DataButtons>, val listener: buttonClickListener ) : RecyclerView.Adapter<ButtonViewHolder>(){
     val a =0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ButtonViewHolder {
@@ -18,7 +18,7 @@ class ButtonAdapter(val items: List<DataButtons>,val listener: buttonClickListen
     }
 
     override fun onBindViewHolder(holder: ButtonViewHolder, position: Int) {
-        val current = items[position]
+        val current = items!!.get(position)
         holder.titleButton.text= current.name
         holder.titleButton.setOnClickListener {
             listener.onClick(current)

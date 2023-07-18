@@ -1,6 +1,5 @@
 package com.example.learn1
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.learn1.DataClass.DataNews
 
 
-class NewsAdapter(val items: List<DataNews>,val View:Int, val listener: newsClickListener) : RecyclerView.Adapter<NewsViewHolder>() {
+class NewsAdapter(val items: List<DataNews>, val View:Int, val listener: newsClickListener) : RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(View, parent, false)
         return NewsViewHolder(view,View)
@@ -77,5 +77,5 @@ class NewsViewHolder(itemView: View,view: Int) : RecyclerView.ViewHolder(itemVie
 interface newsClickListener{
     fun onNewsClick(news: DataNews)
     fun onShareClick(url:String)
-    fun onSaveClick(news:DataNews)
+    fun onSaveClick(news: DataNews)
 }

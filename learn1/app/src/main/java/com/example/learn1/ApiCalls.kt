@@ -1,5 +1,6 @@
 package com.example.learn1
 
+import com.example.learn1.DataClass.DataNewsList
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Url

@@ -1,6 +1,7 @@
-package com.example.learn1
+package com.example.learn1.DataClass
 
 import androidx.room.Entity
+import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
@@ -15,5 +16,5 @@ data class DataNews(
     var content : String,
     var saved : Boolean,
     @PrimaryKey(autoGenerate = true)
-    var id:Int
+    var id:Long
 ): Serializable

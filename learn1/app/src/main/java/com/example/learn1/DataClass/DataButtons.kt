@@ -1,4 +1,4 @@
-package com.example.learn1
+package com.example.learn1.DataClass
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class DataButtons(
     val name: String,
     val query: String,
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int
 )

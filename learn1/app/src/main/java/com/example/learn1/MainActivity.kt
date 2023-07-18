@@ -1,10 +1,8 @@
 package com.example.learn1
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log.d
 import android.view.View
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
@@ -14,16 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learn1.Dao.ButtonDao
 import com.example.learn1.Dao.NewsDao
+import com.example.learn1.DataClass.DataButtons
+import com.example.learn1.DataClass.DataNews
 import com.example.learn1.dataBase.MyDatabase
+import com.example.learn1.dataBase.NewsDatabase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener {
-    private lateinit var mAdapter: ButtonAdapter
-    var queryButtonList = mutableListOf<DataButtons>()
+    private lateinit var buttonAdapter: ButtonAdapter
+    private lateinit var newsAdapter: NewsAdapter
     val newsObj = News()
+    lateinit var newsList : MutableList<DataNews>
     lateinit var buttonDao:ButtonDao
-    lateinit var newsDao: NewsDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         val newsQueryEditText = findViewById<EditText>(R.id.newsQuery)
 
         buttonDao = MyDatabase.getButtonDatabase(application)!!.buttonDao
-        newsDao = MyDatabase.getNewsDatabase(application)!!.newsDao
 
         recyclerV.setNestedScrollingEnabled(false);
         val horizontalLayout = LinearLayoutManager(
@@ -53,10 +53,17 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         )
         newsRecyclerV.layoutManager = horizontalLayout
         recyclerV.layoutManager = LinearLayoutManager(this)
+        buttonDao.getButtonList().observe(this) { buttonList ->
+            buttonAdapter = ButtonAdapter(buttonList, this)
+            recyclerV.adapter = buttonAdapter
+        }
 
-        newsObj.fetchData(newsRecyclerV, view = R.layout.main_item_news, listener = this@MainActivity)
-        mAdapter = ButtonAdapter(queryButtonList,this)
-        recyclerV.adapter = mAdapter
+
+        lifecycleScope.launch{
+            newsList = newsObj.fetchData()
+            newsAdapter = NewsAdapter(newsList, R.layout.main_item_news, this@MainActivity)
+            newsRecyclerV.adapter = newsAdapter
+        }
         val intent = Intent(this,News::class.java)
         searchNews.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
@@ -126,23 +133,11 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
             }.withEndAction{Splashlayouut.visibility = View.GONE}
 
         },2000)
-        queryButtonList.addAll(buttonDao.getButtonList())
-
-
     }
 
     private fun addItem(name:String, query:String){
-        val id = genID()
-        val obj = DataButtons(name, query, id)
-        queryButtonList.add(obj)
+        val obj = DataButtons(name, query, 0)
         buttonDao.insertButton(obj)
-        mAdapter.notifyItemInserted(queryButtonList.size)
-    }
-
-    private fun genID(): Int {
-        if(queryButtonList.isEmpty())
-            return 0
-        return queryButtonList.last().id +1
     }
 
     suspend fun scrollDown(){
@@ -163,18 +158,13 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
 
     override fun deleteButton(dataButtons: DataButtons) {
         Toast.makeText(this, "Removed Button", Toast.LENGTH_SHORT).show()
-        queryButtonList.remove(dataButtons)
-        d("deleteButton: ","${dataButtons.toString()}")
         buttonDao.deleteButton(dataButtons)
-        mAdapter.notifyDataSetChanged()
     }
 
     override fun onNewsClick(news: DataNews) {
         val intent = Intent(this,NewsContent::class.java)
         intent.putExtra("newsObj",news)
         startActivity(intent)
-//        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//        startActivity(browserIntent)
     }
 
     override fun onShareClick(url: String) {

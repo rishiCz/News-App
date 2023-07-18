@@ -10,20 +10,28 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.learn1.Dao.NewsDao
-import com.example.learn1.dataBase.MyDatabase
+import com.example.learn1.DataClass.DataNews
+import com.example.learn1.dataBase.NewsDatabase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class NewsContent : AppCompatActivity() {
     lateinit var newsDao: NewsDao
+    lateinit var savedNewsList: List<DataNews>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_content)
 
-        var news = intent.extras?.getSerializable("newsObj") as DataNews
+
+        var news= intent.extras?.getSerializable("newsObj") as DataNews
 
         val newsImage = findViewById<ImageView>(R.id.news_picture_view)
         val titleView = findViewById<TextView>(R.id.titleView_news_content)
@@ -35,14 +43,26 @@ class NewsContent : AppCompatActivity() {
         val shareButton = findViewById<ImageButton>(R.id.shareButton)
         val browserButton = findViewById<Button>(R.id.browserButton)
         val backButton = findViewById<ImageButton>(R.id.newsBackButton_news_content)
-        newsDao = MyDatabase.getNewsDatabase(application)!!.newsDao
-        genID(news)
+        newsDao = NewsDatabase.getNewsDatabase(application)!!.newsDao
+        lifecycleScope.launch {
+            newsDao.getSavedNewsList().observeForever { savedNews ->
+                savedNewsList = savedNews
+            }
+            while(!this@NewsContent::savedNewsList.isInitialized) {
+                delay(1)
+            }
+            genID(news)
+            updateButton(news.saved, bookBut)
+        }
+            titleView.text=news.title
+            authorView.text="-${news.author}"
+            descriptioView.text= news.description
+            contentView.text= news.content.replace(Regex("\\[([^\\[\\]]+)]"),"")
+            dateTV.text=news.publishedAt.substring(0..9)
 
-        titleView.text=news.title
-        authorView.text="-${news.author}"
-        descriptioView.text= news.description
-        contentView.text= news.content.replace(Regex("\\[([^\\[\\]]+)]"),"")
-        dateTV.text=news.publishedAt.substring(0..9)
+
+
+
 
         if(news.urlToImage == "null")
             newsImage.setImageResource(R.drawable.image_not_loaded)
@@ -52,7 +72,6 @@ class NewsContent : AppCompatActivity() {
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(newsImage)
 
-        updateButton(news.saved, bookBut)
         bookBut.setOnClickListener{onSaveClick(news,bookBut)}
         shareButton.setOnClickListener{onShareClick(news.url)}
         browserButton.setOnClickListener{onBrowserClick(news.url)}
@@ -88,9 +107,8 @@ class NewsContent : AppCompatActivity() {
 
     private fun genID(news: DataNews) {
         news.saved=true
-        for(item in newsDao.getSavedNewsList() as MutableList<DataNews>){
+        for(item in savedNewsList){
             news.id=item.id
-            Log.d( "genID: ","\nnews:  $news \nitem: $item")
             if (news == item)
                 return
         }

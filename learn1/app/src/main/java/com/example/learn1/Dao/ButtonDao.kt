@@ -2,7 +2,7 @@ package com.example.learn1.Dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.learn1.DataButtons
+import com.example.learn1.DataClass.DataButtons
 
 @Dao
 interface ButtonDao {
@@ -13,7 +13,7 @@ interface ButtonDao {
     fun deleteButton(button: DataButtons)
 
     @Query("SELECT * FROM DataButtons")
-    fun getButtonList(): List<DataButtons>
+    fun getButtonList(): LiveData<MutableList<DataButtons>>
 
 
 }
