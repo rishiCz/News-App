@@ -6,30 +6,26 @@ import android.os.Looper
 import android.view.View
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.learn1.Dao.ButtonDao
-import com.example.learn1.Dao.NewsDao
 import com.example.learn1.DataClass.DataButtons
 import com.example.learn1.DataClass.DataNews
-import com.example.learn1.dataBase.MyDatabase
-import com.example.learn1.dataBase.NewsDatabase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener {
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var buttonAdapter: ButtonAdapter
     private lateinit var newsAdapter: NewsAdapter
-    val newsObj = News()
-    lateinit var newsList : MutableList<DataNews>
-    lateinit var buttonDao:ButtonDao
+    private lateinit var newsList : List<DataNews>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val Splashlayouut = findViewById<LinearLayout>(R.id.splashLayoout)
+        val splashlayouut = findViewById<LinearLayout>(R.id.splashLayoout)
         val savedNewsButton = findViewById<ImageButton>(R.id.savedNewsButton)
         val searchNews = findViewById<SearchView>(R.id.editText_enter_name)
         val topHeadlinesButton = findViewById<Button>(R.id.getTopHeadlines)
@@ -43,9 +39,7 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         val newsNameEditText = findViewById<EditText>(R.id.newsName)
         val newsQueryEditText = findViewById<EditText>(R.id.newsQuery)
 
-        buttonDao = MyDatabase.getButtonDatabase(application)!!.buttonDao
-
-        recyclerV.setNestedScrollingEnabled(false);
+        recyclerV.isNestedScrollingEnabled = false
         val horizontalLayout = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
@@ -53,14 +47,13 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         )
         newsRecyclerV.layoutManager = horizontalLayout
         recyclerV.layoutManager = LinearLayoutManager(this)
-        buttonDao.getButtonList().observe(this) { buttonList ->
+        viewModel.getSavedButtons().observe(this) { buttonList ->
             buttonAdapter = ButtonAdapter(buttonList, this)
             recyclerV.adapter = buttonAdapter
         }
 
-
         lifecycleScope.launch{
-            newsList = newsObj.fetchData()
+            newsList = viewModel.fetchData()
             newsAdapter = NewsAdapter(newsList, R.layout.main_item_news, this@MainActivity)
             newsRecyclerV.adapter = newsAdapter
         }
@@ -73,7 +66,7 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
                 bundle.putString("query", "q=${text?.replace(' ','_')}")
                 intent.putExtras(bundle)
                 startActivity(intent)
-                return true;
+                return true
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -127,23 +120,23 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
         }
 
         Handler(Looper.getMainLooper()!!).postDelayed({
-            Splashlayouut.animate().apply {
+            splashlayouut.animate().apply {
                 duration = 500
                 translationY(2000f)
-            }.withEndAction{Splashlayouut.visibility = View.GONE}
+            }.withEndAction{splashlayouut.visibility = View.GONE}
 
         },2000)
     }
 
     private fun addItem(name:String, query:String){
-        val obj = DataButtons(name, query, 0)
-        buttonDao.insertButton(obj)
+        val button = DataButtons(name, query, 0)
+        viewModel.insertSavedButton(button)
     }
 
-    suspend fun scrollDown(){
+    private suspend fun scrollDown(){
         delay(20)
         val scrollView = findViewById<ScrollView>(R.id.mainScrollView)
-        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN)
     }
 
     override fun onClick(dataButtons: DataButtons) {
@@ -158,7 +151,7 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
 
     override fun deleteButton(dataButtons: DataButtons) {
         Toast.makeText(this, "Removed Button", Toast.LENGTH_SHORT).show()
-        buttonDao.deleteButton(dataButtons)
+        viewModel.deleteSavedButton(dataButtons)
     }
 
     override fun onNewsClick(news: DataNews) {
@@ -178,5 +171,4 @@ class MainActivity : AppCompatActivity(), buttonClickListener,newsClickListener 
     override fun onSaveClick(news: DataNews) {
        return
     }
-
 }

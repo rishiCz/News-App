@@ -44,8 +44,8 @@ class NewsAdapter(val items: List<DataNews>, val View:Int, val listener: newsCli
             current.saved = !current.saved
             holder.bookbut.animate().apply {
                 duration=200
-                scaleXBy(0.4f)
-                scaleYBy(0.4f)
+                scaleXBy(0.3f)
+                scaleYBy(0.3f)
             }.withEndAction {
                 updateButton(current.saved, holder.bookbut)
                 listener.onSaveClick(current)

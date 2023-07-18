@@ -14,9 +14,4 @@ interface NewsDao {
 
     @Query("SELECT * FROM DataNews ORDER BY id DESC")
     fun getSavedNewsList(): LiveData<List<DataNews>>
-
-    @Update
-    fun updateNews(news: DataNews)
-
-
 }

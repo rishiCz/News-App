@@ -14,6 +14,4 @@ interface ButtonDao {
 
     @Query("SELECT * FROM DataButtons")
     fun getButtonList(): LiveData<MutableList<DataButtons>>
-
-
 }
